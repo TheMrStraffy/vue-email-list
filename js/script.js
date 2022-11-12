@@ -11,27 +11,24 @@ createApp({
   },
   methods: {
     getApi(){
+      if(!this.isDone){
 
-        axios.get(this.apiUrl)
-        .then( email => {
+        while(this.counter < 10){
+          axios.get(this.apiUrl)
+          .then( email => {
             this.emails.push(email.data.response);
-        })
+            if(this.emails.length === this.counter) this.isDone = true;
+          });
+          this.counter++;
+        };
+      }
       
     }
   },
   mounted(){
-    while(this.isDone === false){
-      console.log("dentro while");
-      console.log("---------" + this.isDone);
-      this.getApi();
-      this.isDone = false;
-      this.counter++;
-      if(this.counter === 10){
-        this.isDone = true;
-        console.log("Ora e true");
-      }
-    }
-    console.log("This works   " + this.counter);
+    
+    this.getApi();
+    
   },
   created(){
 
